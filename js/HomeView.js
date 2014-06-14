@@ -10,6 +10,10 @@ var HomeView = function (template) {
         this.el.html(template());
         return this;
     };
+    
+    this.assignHandlers = function() {
+    	assignSliderOpenHandler();
+    };
 
     this.initialize();
 

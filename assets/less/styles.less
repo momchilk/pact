@@ -41,6 +41,15 @@ body {
     position: relative;
 }
 
+#content.snap-content  {
+   //position: fixed;
+}
+
+.placeholder-container {
+    overflow-y: auto; 
+    height: 100%;
+}
+
 // Buttons
 
 
@@ -101,14 +110,14 @@ body {
 }
 
 .back-btn {
-    padding-top: 11px !important;
+    padding-top: 6px !important;
     img {
         width: 25px;
     }
 }
 
 .search-btn {
-    padding-top: 9px !important;
+    padding-top: 20px !important;
     img {
         width: 20px;
     }
@@ -116,15 +125,14 @@ body {
 
 .side-menu-btn {
   display: block;
-  font-size: 40px;
-  color: #ffffff;
-  width: 44px;
-  height: 44px;
+  font-size: 32px;
+  color: #5c5c5c;
+  width: 30px;
+  height: 30px;
   position: absolute;
-  top: 20px;
-  left: 20px;
+  top: 25px;
+  left: 15px;
   z-index: 2;
-
 }
 
 .preview-btn {
@@ -171,7 +179,7 @@ body {
 
 .subscribe-list-btn {
     position: absolute;
-    padding-top: 9px !important;
+    padding-top: 20px !important;
     //padding-right: 3px !important;
     top: 6px;
     right: 40px;
@@ -225,14 +233,14 @@ body {
 }
 
 .bar-header {
-    height: 55px;
+    height: 75px;
     border-bottom: 1px solid #cfcfcf;
     background: #fafafa;
     position: fixed;
     top: 0px;
     left: 0px;
     .title {
-        line-height: 55px;
+        line-height: 85px;
         font-size: 18px;
         color: #5c5c5c;
     }
@@ -242,7 +250,7 @@ body {
 }
 
 .search-row {
-    margin-top: 55px;
+    margin-top: 75px;
     padding: 0px !important;
     .col {
         padding: 0px;
@@ -409,7 +417,7 @@ body {
 
 .left-menu {
     .header {
-        padding: 10px 15px;
+        padding: 30px 15px 10px 15px;
         .armorial {
             margin-right: 5px;
             img {
@@ -441,7 +449,14 @@ body {
             padding: 0px;
             &.active {
                 .section {
-                    .flag {
+                    .flag-active {
+                        display: block;
+                    }
+                }
+            }
+            &.new {
+                .section {
+                    .flag-new {
                         display: block;
                     }
                 }
@@ -453,13 +468,25 @@ body {
                 font-size: 16px;
                 padding: 10px 15px;
                 border-bottom: 1px solid #cfcfcf;
-                .flag {
+                .flag-active {
                     position: absolute;
                     top: 0px;
                     left: 0px;
                     width: 5px;
                     height: 100%;
                     background: #43c364;
+                    display: none;
+                }
+                .flag-new {
+                    position: absolute;
+                    top: 0px;
+                    right: 0px;
+                    width: 55px;
+                    height: 20px;
+                    background: #e54f45;
+                    color: #ffffff;
+                    text-align: center;
+                    line-height: 18px;
                     display: none;
                 }
                 .ico {
@@ -517,6 +544,15 @@ body {
     color: #ffffff;
     background: url("../img/home-screen-bg.jpg") no-repeat fixed center bottom / cover rgba(0, 0, 0, 0);
 
+    .side-menu-btn {
+        top: 20px;
+        left: 20px;
+        font-size: 40px;
+        width: 44px;
+        height: 44px;
+        color: #ffffff;
+    }
+
     .armorial-wrapper {
         width: 100%;
         overflow: hidden;
@@ -558,7 +594,7 @@ body {
     .detail-preview {
         padding: 0px !important;
     }
-    padding-top: 55px;
+    padding-top: 75px;
     overflow: auto;
     .content-wrapper {
         margin-bottom: 45px;
@@ -639,7 +675,7 @@ body {
 /* ===== Options Screen ===== */
 
 .options-tpl {
-    padding-top: 55px;
+    padding-top: 75px;
     overflow: auto;
     height: 100%;
     .item-toggle {
@@ -660,7 +696,7 @@ body {
     }
     .content-wrapper {
         position: absolute;
-        top: 55px;
+        top: 75px;
         left: 0px;
         background: #f7f7f7;
         height: 100%;

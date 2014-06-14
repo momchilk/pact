@@ -76,6 +76,35 @@ var billsDetailUrl = "#billsDetail";
 var mpsAZListUrl = "#mpsAZList";
 var mpDetailUrl = "#mpsDetail";
 
+assignMainMenuHandlers();
+
+
+function assignMainMenuHandlers() {
+	if ($('#mainMenuPlenary')) {
+		$('#mainMenuPlenary').unbind().bind('click', function() {
+			openAppUrl(plenaryUrl);
+		});
+	}
+	
+	if ($('#mainMenuControll')) {
+		$('#mainMenuControll').unbind().bind('click', function() {
+			openAppUrl(controllUrl);
+		});
+	}
+	
+	if ($('#mainMenuCommittee')) {
+		$('#mainMenuCommittee').unbind().bind('click', function() {
+			openAppUrl(committeeUrl);
+		});
+	}
+	
+	if ($('#mainMenuNews')) {
+		$('#mainMenuNews').unbind().bind('click', function() {
+			openAppUrl(newsUrl);
+		});
+	}
+	
+};
 
 // We use an "Immediate Function" to initialize the application to avoid leaving anything behind in the global scope
 (function () {
@@ -103,9 +132,6 @@ var mpDetailUrl = "#mpsDetail";
     	adapters[i].initialize();
     }
     route();
-    /*adapter.initialize().done(function () {
-        route();
-    });*/
     
     /* --------------------------------- Event Registration -------------------------------- */
     $(window).on('hashchange', route);
@@ -139,8 +165,19 @@ var mpDetailUrl = "#mpsDetail";
 	function route() {
 		var hash = window.location.hash;
 		if (!hash) {
+//			var plenary = new PlenaryView(plenaryTpl);
+//			plenary.getData(function(tplData) {
+//				//slider.slidePage(plenary.render(tplData).el);
+//				$('#page-placeholder').html(plenary.render(tplData).el);
+//				plenary.assignHandlers();
+//			});
+//			snapper.close();
+//			return;
+
 			//slider.slidePage(new HomeView(homeTpl).render().el);
-			$('#page-placeholder').html(new HomeView(homeTpl).render().el);
+			var home = new HomeView(homeTpl);
+			$('#page-placeholder').html(home.render().el);
+			home.assignHandlers();
 			snapper.close();
 			return;
 		}
@@ -151,6 +188,7 @@ var mpDetailUrl = "#mpsDetail";
 			var home = new HomeView(homeTpl);
 			//slider.slidePage(home.render(homePageNewItemsCounters).el);
 			$('#page-placeholder').html(home.render(homePageNewItemsCounters).el);
+			home.assignHandlers();
 			snapper.close();
 			return;
 		}

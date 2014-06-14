@@ -1,7 +1,7 @@
 var PlenaryView = function(template) {
 
     this.initialize = function() {
-        this.el = $('<div class="placeholder-container"></div>');
+        this.el = $('<span></span>');
         //this.el.on('click', '.add-location-btn', this.addLocation);
     };
 
@@ -98,6 +98,9 @@ var PlenaryView = function(template) {
 	
 	this.assignHandlers = function() {
 		var self = this;
+		
+		assignSliderOpenHandler();
+		assignFooterHandlers();
 		
 		$('#btnSearchPlenary').unbind().bind('click', function() {
 			$('#searchBoxPlenary').slideToggle("slow");
