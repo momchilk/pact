@@ -1,4 +1,4 @@
-var VotingAreasView = function(template) {
+var ParlamStructsView = function(template) {
 
     this.initialize = function() {
         this.el = $('<span></span>');
@@ -10,39 +10,83 @@ var VotingAreasView = function(template) {
         return this;
     };
 
-	this.getData = function(callback) {
-		var adapter = getAdapter(votingAreasDataFile);
+	this.getData = function(structType, callback) {
+		var adapter = getAdapter(structsDataFile);
 		console.log('got adapter: ' + adapter.dataFile);
 		var parser = new DOMParser();
 		//console.log('Stored Rss Data: ' + adapter.rssData);
 		var data = parser.parseFromString(adapter.rssData, "text/xml");
 		
-		var areasList = data.getElementsByTagName('item');
+		var structList = data.getElementsByTagName('collection');
 		
-		var areas = [];
+		var type;
 		var idx = 0;
-		for (var pi = 0; pi < areasList.length; pi++) {
+		var structId = 0;
+		
+		var mpParser = new DOMParser();
+		var mpsAdapter = getAdapter(deputiesDataFile);
+		var mpsStructs = mpParser.parseFromString(mpsAdapter.rssData, "text/xml").getElementsByTagName('ParliamentaryActivity');
+		//console.log('брой депутати: ' + mpsStructs.length);
+		
+		//We iterate mp's records to count mps in desired type
+		var structIds = [];
+		var structMembers = [];
+		var structNodes;
+		var endDate;
+		for (var i = 0; i < mpsStructs.length; i++) {
+			structNodes = mpsStructs[i].getElementsByTagName('ParliamentaryStructure');
+			structId = 0;
+			for (var j = 0; j< structNodes.length; j++) {
+				type = structNodes[j].getElementsByTagName('ParliamentaryStructureTypeID')[0].attributes.getNamedItem('value').value;
+				endDate = structNodes[j].getElementsByTagName('To')[0].attributes.getNamedItem('value').value;
+				if (type != structType || endDate != '') {
+					continue;
+				}
+				structId = structNodes[j].getElementsByTagName('ParliamentaryStructureID')[0].attributes.getNamedItem('value').value;
+				idx = structIds.indexOf(structId);
+				if (idx == -1) {
+					idx = structIds.length;
+					structIds[idx] = structId;
+					structMembers[idx] = 0;
+				}
+				structMembers[idx]++;
+			}
+		}
+		
+		//get structures
+		var structs = [];
+		var pos = 0, cnt = 0;
+		idx = 0;
+		for (var pi = 0; pi < structList.length; pi++) {
 			
-			areas[idx] = {
-				aid: idx,
-				areaId: areasList[pi].getElementsByTagName('ID')[0] ? areasList[pi].getElementsByTagName('ID')[0].textContent : 0,
-				areaName: areasList[pi].getElementsByTagName('Name')[0] ? areasList[pi].getElementsByTagName('Name')[0].textContent : 0
-						
-				/*type: plenariesList[pi].getElementsByTagName('type')[0] ? plenariesList[pi].getElementsByTagName('type')[0].textContent : 0,
-				status: status,
-				startDate: isoToBgDate(plenariesList[pi].getElementsByTagName('start_date')[0] ? plenariesList[pi].getElementsByTagName('start_date')[0].textContent : 'n/a'),
-				endDate: isoToBgDate(plenariesList[pi].getElementsByTagName('end_date')[0] ? plenariesList[pi].getElementsByTagName('end_date')[0].textContent : 'n/a'),
-				startTime: plenariesList[pi].getElementsByTagName('start_time')[0] ? plenariesList[pi].getElementsByTagName('start_time')[0].textContent : 'n/a',
-				link: plenariesList[pi].getElementsByTagName('item_link')[0] ? plenariesList[pi].getElementsByTagName('item_link')[0].textContent : 'javascript:void(0)',
-				pubDate: isoToBgDate(plenariesList[pi].getElementsByTagName('pubDate')[0] ? plenariesList[pi].getElementsByTagName('pubDate')[0].textContent : 'n/a'),
-				agenda: agendaItems,
-				dscrShort: shortDscr*/
+			type = structList[pi].getElementsByTagName('typeID')[0] ? structList[pi].getElementsByTagName('typeID')[0].textContent : 0;
+			if (type != structType) {
+				continue;
+			}
+			
+			structId = structList[pi].getElementsByTagName('collection_id')[0] ? structList[pi].getElementsByTagName('collection_id')[0].textContent : 0;
+			cnt = 'XX';
+			//get member's count
+			pos = structIds.indexOf(structId);
+			if (pos == -1) {
+				cnt = 0;
+			} else {
+				cnt = structMembers[pos];
+			}
+			
+			structs[idx] = {
+				gid: idx,
+				structType: type,
+				structId: structId,
+				structName: structList[pi].getElementsByTagName('collection_name')[0] ? structList[pi].getElementsByTagName('collection_name')[0].textContent : '',
+				structTypeName: structList[pi].getElementsByTagName('type')[0] ? structList[pi].getElementsByTagName('type')[0].textContent : '',
+				structMembers: cnt
 			};
 			idx++;
 		}
 		
 		tplData = {
-			areas: areas
+			structs: structs
 		};
 		
 		if (callback) {
