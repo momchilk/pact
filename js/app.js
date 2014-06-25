@@ -124,6 +124,7 @@ function assignMainMenuHandlers() {
 	
 	if ($('#mainMenuMPs')) {
 		$('#mainMenuMPs').unbind().bind('click', function() {
+			console.log('mpAZListUrl clicked');
 			openAppUrl(mpAZListUrl);
 		});
 	}
