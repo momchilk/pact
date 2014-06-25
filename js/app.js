@@ -436,6 +436,7 @@ function assignMainMenuHandlers() {
 				var filter = parts[1].split('=');
 			}
 			var mps = new MPsView(mpsAZTpl);
+			console.log('Getting mps data');
 			mps.getData(filter, function(tplData) {
 				//slider.slidePage(mps.render(tplData).el);
 				$('#page-placeholder').html(mps.render(tplData).el);
