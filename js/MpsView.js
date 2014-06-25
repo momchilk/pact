@@ -12,6 +12,7 @@ var MPsView = function(template) {
 	};
 
 	this.getData = function(filter, callback) {
+		console.log('getData entered');
 		var adapter = getAdapter(deputiesDataFile);
 		console.log('got adapter: ' + adapter.dataFile);
 		var parser = new DOMParser();
